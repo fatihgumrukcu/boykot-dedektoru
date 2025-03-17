@@ -10,9 +10,22 @@
 		AF14D19C2D8484B40086FC97 /* Boykot Dedektoru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Boykot Dedektoru.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AF35CAE12D8845CF0027891D /* Exceptions for "Boykot Dedektoru" folder in "Boykot Dedektoru" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Boykot-Dedektoru-Info.plist",
+			);
+			target = AF14D19B2D8484B40086FC97 /* Boykot Dedektoru */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AF14D19E2D8484B40086FC97 /* Boykot Dedektoru */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AF35CAE12D8845CF0027891D /* Exceptions for "Boykot Dedektoru" folder in "Boykot Dedektoru" target */,
+			);
 			path = "Boykot Dedektoru";
 			sourceTree = "<group>";
 		};
@@ -255,6 +268,8 @@
 				DEVELOPMENT_TEAM = VG3766N38N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Boykot-Dedektoru-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Barkod tarama özelliği için kamera izni gerekiyor";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +299,8 @@
 				DEVELOPMENT_TEAM = VG3766N38N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Boykot-Dedektoru-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Barkod tarama özelliği için kamera izni gerekiyor";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
