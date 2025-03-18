@@ -57,6 +57,8 @@ struct BrandCard: View {
         }
         .sheet(isPresented: $showDetail) {
             BrandDetailView(brand: brand)
+                .presentationBackground(.clear)
+                .presentationCornerRadius(25)
         }
     }
 }
@@ -110,6 +112,8 @@ struct BrandGridCard: View {
         }
         .sheet(isPresented: $showDetail) {
             BrandDetailView(brand: brand)
+                .presentationBackground(.clear)
+                .presentationCornerRadius(25)
         }
     }
 }

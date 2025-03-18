@@ -27,6 +27,7 @@ struct CustomToggleStyle: ToggleStyle {
 
 struct SettingsView: View {
     @Environment(\.openURL) var openURL
+    @StateObject private var notificationManager = NotificationManager.shared
     @AppStorage("notificationsEnabled") private var notificationsEnabled = false
     @State private var showAbout = false
     
@@ -35,6 +36,45 @@ struct SettingsView: View {
             if success {
                 notificationsEnabled = true
             }
+        }
+    }
+    
+    // Helper functions moved outside of body
+    private func sectionHeader(text: String) -> some View {
+        Text(text)
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundColor(.white.opacity(0.7))
+            .padding(.leading, 4)
+    }
+    
+    private func menuButton(icon: String, text: String, action: (() -> Void)? = nil) -> some View {
+        Button(action: {
+            if let action = action {
+                action()
+            }
+        }) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundColor(.white)
+                    .frame(width: 30)
+                
+                Text(text)
+                    .font(.system(size: 17, weight: .regular))
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.white.opacity(0.7))
+                    .font(.system(size: 14, weight: .semibold))
+            }
+            .padding(.vertical, 14)
+            .padding(.horizontal, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(red: 0.15, green: 0.25, blue: 0.45).opacity(0.5))
+            )
         }
     }
     
@@ -76,11 +116,19 @@ struct SettingsView: View {
                                     
                                     Toggle("", isOn: $notificationsEnabled)
                                         .toggleStyle(CustomToggleStyle())
-                                        .onChange(of: notificationsEnabled) {
-                                            requestNotificationPermission()
+                                        #if compiler(>=5.9)
+                                        .onChange(of: notificationsEnabled) { oldValue, newValue in
+                                            if newValue {
+                                                notificationManager.requestAuthorization()
+                                            }
                                         }
-
+                                        #else
+                                        .onChange(of: notificationsEnabled) { newValue in
+                                            if newValue {
+                                                notificationManager.requestAuthorization()
+                                            }
                                         }
+                                        #endif
                                 }
                                 .padding(.vertical, 14)
                                 .padding(.horizontal, 16)
@@ -92,10 +140,15 @@ struct SettingsView: View {
                                 menuButton(icon: "info.circle.fill", text: "Hakkımızda") {
                                     showAbout = true
                                 }
+                                
                                 menuButton(icon: "star.fill", text: "Uygulamayı Oyla") {
                                     openURL(URL(string: "https://apps.apple.com/app/id")!)
                                 }
-                                menuButton(icon: "hand.raised.fill", text: "Gizlilik")
+                                
+                                menuButton(icon: "hand.raised.fill", text: "Gizlilik") {
+                                    openURL(URL(string: "https://boykotdedektoru.netlify.app/gizlilik")!)
+                                }
+                                
                                 menuButton(icon: "square.and.arrow.up.fill", text: "Uygulamayı Paylaş") {
                                     let appName = "Boykot Dedektörü"
                                     let message = """
@@ -156,10 +209,14 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 12) {
                                 sectionHeader(text: "İLETİŞİM")
                                 
-                                menuButton(icon: "lightbulb.fill", text: "Öneri")
-                                menuButton(icon: "exclamationmark.triangle.fill", text: "Marka İtiraz")
+                                menuButton(icon: "lightbulb.fill", text: "Öneri") {
+                                    openURL(URL(string: "https://boykotdedektoru.netlify.app/oneriler")!)
+                                }
+                                menuButton(icon: "exclamationmark.triangle.fill", text: "Marka İtiraz") {
+                                    openURL(URL(string: "https://boykotdedektoru.netlify.app/itiraz")!)
+                                }
                                 menuButton(icon: "envelope.fill", text: "Bize Ulaşın") {
-                                    openURL(URL(string: "mailto:contact@boykotdedektoru.com")!)
+                                    openURL(URL(string: "https://boykotdedektoru.netlify.app/iletisim")!)
                                 }
                             }
                             
@@ -183,45 +240,9 @@ struct SettingsView: View {
         }
     }
     
-    func sectionHeader(text: String) -> some View {
-        Text(text)
-            .font(.system(size: 13, weight: .semibold))
-            .foregroundColor(.white.opacity(0.7))
-            .padding(.leading, 4)
-    }
-    
-    func menuButton(icon: String, text: String, action: (() -> Void)? = nil) -> some View {
-        Button(action: {
-            if let action = action {
-                action()
-            }
-        }) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(width: 30)
-                
-                Text(text)
-                    .font(.system(size: 17, weight: .regular))
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.white.opacity(0.7))
-                    .font(.system(size: 14, weight: .semibold))
-            }
-            .padding(.vertical, 14)
-            .padding(.horizontal, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(red: 0.15, green: 0.25, blue: 0.45).opacity(0.5))
-            )
+    struct SettingsView_Previews: PreviewProvider {
+        static var previews: some View {
+            SettingsView()
         }
     }
-
-
-#Preview {
-    SettingsView()
-} 
+}

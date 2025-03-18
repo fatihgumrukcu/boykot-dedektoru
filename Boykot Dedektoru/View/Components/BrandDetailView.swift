@@ -11,7 +11,7 @@ struct BrandDetailView: View {
                 Image(brand.image)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 500, height: 500)
+                    .frame(width: 250, height: 250)
                     .padding(10)
                     .background(Color(red: 0.05, green: 0.1, blue: 0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 25))
@@ -93,7 +93,17 @@ struct BrandDetailView: View {
                 endPoint: .bottom
             )
         )
-        .clipShape(RoundedRectangle(cornerRadius: 25))
+        .overlay(
+            Button(action: {
+                dismiss()
+            }) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 30))
+                    .foregroundColor(.white.opacity(0.7))
+            }
+            .padding(16),
+            alignment: .topTrailing
+        )
     }
 }
 
